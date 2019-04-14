@@ -1,19 +1,18 @@
 package data.remote;
 
-import android.provider.CalendarContract;
 
-import data.model.Post;
+import data.model.TokenPost;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 //used to execute HTTP requests
 
 public interface APIService {
-    @POST("/posts")
+    @Headers("Accept:application/json")
+    @POST("/api-user-get")
     @FormUrlEncoded
-    Call<Post> savePost(@Field("title") String title,
-                        @Field("body") String body,
-                        @Field("userId") long userId);
+    Call<TokenPost> getToken(@Field("email") String email);
 }
