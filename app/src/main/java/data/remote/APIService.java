@@ -27,7 +27,7 @@ public interface APIService {
     @FormUrlEncoded
     Call<GetAllSpotsPOST> getAllSpots(@Header("token") String token,
                                       @Field("country") String country,
-                                      @Field("windProbability") int windProbability);
+                                      @Field("windProbability") String windProbability);
 
     @Headers("Accept:application/json")
     @POST("/api-spot-get-details")
