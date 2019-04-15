@@ -7,14 +7,14 @@ public class TokenPost {
 
     @SerializedName("result")
     @Expose
-    private Result result;
+    private TokenResult tokenResult;
 
-    public Result getResult() {
-        return result;
+    public TokenResult getResult() {
+        return tokenResult;
     }
 
-    public void setResult(Result result) {
-        this.result = result;
+    public void setResult(TokenResult result) {
+        this.tokenResult = result;
     }
 
 }
