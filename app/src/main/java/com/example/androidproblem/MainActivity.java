@@ -1,5 +1,6 @@
 package com.example.androidproblem;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     Drawable starOff;
     LinearLayout.LayoutParams lp;
     List<GetAllSpotsResult> spotList;
-    ButtonListener buttonListener;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +75,13 @@ public class MainActivity extends AppCompatActivity {
                             addFavButton(lp, spotCurrent, buttonLayout);
                             row.addView(textLayout);
                             row.addView(buttonLayout);
+                            row.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    intent = new Intent(getApplicationContext(), Details.class);
+                                    startActivity(intent);
+                                }
+                            });
                             tableLayout.addView(row);
                         }
                     }
