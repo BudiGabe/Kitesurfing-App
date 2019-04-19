@@ -12,11 +12,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ButtonListener implements View.OnClickListener{
-    String token;
-    APIService mApiService;
-    Drawable star;
-    Drawable starOn;
-    Drawable starOff;
+    private String token;
+    private APIService mApiService;
+    private Drawable starOn;
+    private Drawable starOff;
     public ButtonListener(String token, APIService mApiService, Drawable starOn, Drawable starOff){
         this.token = token;
         this.mApiService = mApiService;
@@ -28,7 +27,7 @@ public class ButtonListener implements View.OnClickListener{
     public void onClick(final View v) {
         //get id of spot and favorite status
         String spotIdCurrent = v.getTag().toString();
-        star = v.getBackground();
+        Drawable star = v.getBackground();
         //compare to see if favorited using the drawables
         if(star.getConstantState().equals(starOn.getConstantState())){
             mApiService.remSpotFav(token, spotIdCurrent).enqueue(new Callback<RemoveFavPOST>() {

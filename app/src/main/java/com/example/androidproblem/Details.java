@@ -25,7 +25,6 @@ public class Details extends AppCompatActivity {
     LinearLayout.LayoutParams lp;
     TableRow row;
     TableLayout tableLayout;
-    String[] titles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +37,6 @@ public class Details extends AppCompatActivity {
         extras = getIntent().getExtras();
         token = extras.getString("token");
         spotId = extras.getString("spotId");
-        titles = getResources().getStringArray(R.array.titles);
 
         lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
