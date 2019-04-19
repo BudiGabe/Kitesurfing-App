@@ -5,6 +5,5 @@
         android:id="@+id/favoriteButton"
         android:title=""
         app:showAsAction="always"
-        android:icon="@drawable/star_on"
         />
 </menu>

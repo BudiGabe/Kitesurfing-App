@@ -4,13 +4,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import data.model.ButtonListener;
 import data.model.GetSpotDetPOST;
 import data.model.GetSpotDetResult;
+import data.model.MenuButtonListener;
 import data.remote.APIService;
 import data.remote.ApiUtils;
 import retrofit2.Call;
@@ -32,6 +35,13 @@ public class Details extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.dmenu, menu);
+        boolean isFavorite = extras.getBoolean("isFavorite");
+        if(isFavorite){
+            menu.getItem(0).setIcon(R.drawable.star_on);
+        }
+        else{
+            menu.getItem(0).setIcon(R.drawable.star_off);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -40,9 +50,10 @@ public class Details extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         //get id of selected item
         int id = item.getItemId();
+
         //if selected id matches my button's id
         if(id == R.id.favoriteButton){
-            
+            item.setOnMenuItemClickListener(new MenuButtonListener(token,mApiService,getDrawable(R.drawable.star_on), getDrawable(R.drawable.star_off), spotId));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -65,7 +76,7 @@ public class Details extends AppCompatActivity {
             @Override
             public void onResponse(Call<GetSpotDetPOST> call, Response<GetSpotDetPOST> response) {
                 GetSpotDetResult details = response.body().getResult();
-                boolean isFavorite = details.getIsFavorite();
+                String spotId = details.getId();
                 setTitle(details.getName());
                 addRow("Country", details.getCountry());
                 addRow("Latitude",details.getLatitude().toString());
