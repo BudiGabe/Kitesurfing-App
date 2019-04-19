@@ -1,4 +1,4 @@
-package com.example.androidproblem;
+package data.model;
 
 import android.graphics.drawable.Drawable;
 import android.view.View;

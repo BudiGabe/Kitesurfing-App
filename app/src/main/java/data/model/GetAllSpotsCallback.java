@@ -1,10 +1,7 @@
-package com.example.androidproblem;
+package data.model;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
@@ -13,8 +10,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import data.model.GetAllSpotsPOST;
-import data.model.GetAllSpotsResult;
 import data.remote.APIService;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,7 +56,7 @@ public class GetAllSpotsCallback implements Callback<GetAllSpotsPOST> {
             row.addView(textLayout);
             row.addView(buttonLayout);
             row.setTag(spotId);
-            row.setOnClickListener(new RowListener(context, token));
+            row.setOnClickListener(new RowListener(context, token, spotId));
             tableLayout.addView(row);
         }
     }

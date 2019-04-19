@@ -2,6 +2,8 @@ package com.example.androidproblem;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -26,6 +28,25 @@ public class Details extends AppCompatActivity {
     TableRow row;
     TableLayout tableLayout;
 
+    //create and action bar button
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.dmenu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    //handle button activities
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        //get id of selected item
+        int id = item.getItemId();
+        //if selected id matches my button's id
+        if(id == R.id.favoriteButton){
+            
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +65,8 @@ public class Details extends AppCompatActivity {
             @Override
             public void onResponse(Call<GetSpotDetPOST> call, Response<GetSpotDetPOST> response) {
                 GetSpotDetResult details = response.body().getResult();
+                boolean isFavorite = details.getIsFavorite();
+                setTitle(details.getName());
                 addRow("Country", details.getCountry());
                 addRow("Latitude",details.getLatitude().toString());
                 addRow("Longitude", details.getLongitude().toString());

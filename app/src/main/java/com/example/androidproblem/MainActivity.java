@@ -1,20 +1,12 @@
 package com.example.androidproblem;
 
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
 
-import java.util.List;
-
-import data.model.GetAllSpotsPOST;
-import data.model.GetAllSpotsResult;
+import data.model.GetAllSpotsCallback;
 import data.model.TokenPost;
 import data.remote.APIService;
 import data.remote.ApiUtils;
