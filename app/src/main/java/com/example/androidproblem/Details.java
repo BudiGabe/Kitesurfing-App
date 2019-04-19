@@ -46,6 +46,11 @@ public class Details extends AppCompatActivity {
             @Override
             public void onResponse(Call<GetSpotDetPOST> call, Response<GetSpotDetPOST> response) {
                 GetSpotDetResult details = response.body().getResult();
+                addRow("Country", details.getCountry());
+                addRow("Latitude",details.getLatitude().toString());
+                addRow("Longitude", details.getLongitude().toString());
+                addRow("Wind probability", details.getWindProbability().toString());
+                addRow("When To Go", details.getWhenToGo());
             }
 
             @Override
