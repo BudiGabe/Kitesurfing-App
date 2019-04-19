@@ -3,6 +3,7 @@ package com.example.androidproblem;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
@@ -45,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
         starOn = getDrawable(R.drawable.star_on);
         starOff = getDrawable(R.drawable.star_off);
 
-        buttonListener = new ButtonListener(token,mApiService,starOn,starOff);
         lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
         //get token from backend
@@ -68,11 +68,9 @@ public class MainActivity extends AppCompatActivity {
                             GetAllSpotsResult spotCurrent = spotList.get(i);
                             String spotName = spotCurrent.getName();
                             String spotCountry = spotCurrent.getCountry();
-                            String spotId = spotCurrent.getId();
                             //add spot information to row
                             addSpotText(spotName, textLayout, lp);
                             addSpotText(spotCountry, textLayout, lp);
-                            addSpotText(spotId, textLayout, lp);
                             addFavButton(lp, spotCurrent, buttonLayout);
                             row.addView(textLayout);
                             row.addView(buttonLayout);
@@ -114,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         else{
             favButton.setBackground(getDrawable(R.drawable.star_off));
         }
-        favButton.setOnClickListener(buttonListener);
+        favButton.setOnClickListener(new ButtonListener(token,mApiService,starOn,starOff));
         buttonLayout.addView(favButton);
     }
 
