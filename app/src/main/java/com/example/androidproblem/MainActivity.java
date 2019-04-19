@@ -69,16 +69,20 @@ public class MainActivity extends AppCompatActivity {
                             GetAllSpotsResult spotCurrent = spotList.get(i);
                             String spotName = spotCurrent.getName();
                             String spotCountry = spotCurrent.getCountry();
+                            String spotId = spotCurrent.getId();
                             //add spot information to row
-                            addSpotText(spotName, textLayout, lp);
-                            addSpotText(spotCountry, textLayout, lp);
+                            addSpotText(spotName, textLayout);
+                            addSpotText(spotCountry, textLayout);
                             addFavButton(lp, spotCurrent, buttonLayout);
                             row.addView(textLayout);
                             row.addView(buttonLayout);
+                            row.setTag(spotId);
                             row.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     intent = new Intent(getApplicationContext(), Details.class);
+                                    intent.putExtra("token", token);
+                                    intent.putExtra("spotId", v.getTag().toString());
                                     startActivity(intent);
                                 }
                             });
@@ -100,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void addSpotText(String string, LinearLayout textLayout, LinearLayout.LayoutParams lp){
+    private void addSpotText(String string, LinearLayout textLayout){
         TextView spot = new TextView(getApplicationContext());
         spot.setText(string);
         spot.setLayoutParams(lp);
