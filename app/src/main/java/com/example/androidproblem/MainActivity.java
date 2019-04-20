@@ -1,8 +1,11 @@
 package com.example.androidproblem;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.TableLayout;
 
@@ -50,6 +53,21 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //createa action bar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
-
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        Intent intent = new Intent(getApplicationContext(), FilterActivity.class);
+        startActivity(intent);
+        return super.onOptionsItemSelected(item);
+    }
 }
+
+
+
+
