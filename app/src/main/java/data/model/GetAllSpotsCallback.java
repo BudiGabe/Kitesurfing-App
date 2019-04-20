@@ -53,10 +53,10 @@ public class GetAllSpotsCallback implements Callback<GetAllSpotsPOST> {
             //add spot information to row
             addSpotText(spotName, textLayout);
             addSpotText(spotCountry, textLayout);
-            addFavButton(lp, spotCurrent, buttonLayout);
+            addFavButton(lp, isFavorite, spotId, buttonLayout);
             row.addView(textLayout);
             row.addView(buttonLayout);
-            row.setOnClickListener(new RowListener(context, token, spotId, isFavorite));
+            row.setOnClickListener(new RowListener(context, token, spotId));
             tableLayout.addView(row);
         }
     }
@@ -73,20 +73,20 @@ public class GetAllSpotsCallback implements Callback<GetAllSpotsPOST> {
         textLayout.addView(spot);
     }
 
-    private void addFavButton(LinearLayout.LayoutParams lp, GetAllSpotsResult spotCurrent, LinearLayout buttonLayout){
+    private void addFavButton(LinearLayout.LayoutParams lp, boolean isFavorite, String spotId, LinearLayout buttonLayout){
         //create every button
         favButton = new ImageButton(context);
         favButton.setLayoutParams(lp);
         //set tag for easier access to spotId
-        favButton.setTag(spotCurrent.getId());
+        favButton.setTag(spotId);
         //set button image
-        if(spotCurrent.getIsFavorite()){
+        if(isFavorite){
             favButton.setBackground(starOn);
         }
         else{
             favButton.setBackground(starOff);
         }
-        favButton.setOnClickListener(new ButtonListener(token,mApiService,starOn,starOff));
+        favButton.setOnClickListener(new ButtonListener(token,mApiService, starOn, starOff, isFavorite));
         buttonLayout.addView(favButton);
     }
 }

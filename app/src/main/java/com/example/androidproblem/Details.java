@@ -44,7 +44,6 @@ public class Details extends AppCompatActivity {
         extras = getIntent().getExtras();
         token = extras.getString("token");
         spotId = extras.getString("spotId");
-        isFavorite = extras.getBoolean("isFavorite");
 
         lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -52,7 +51,7 @@ public class Details extends AppCompatActivity {
             @Override
             public void onResponse(Call<GetSpotDetPOST> call, Response<GetSpotDetPOST> response) {
                 GetSpotDetResult details = response.body().getResult();
-                String spotId = details.getId();
+                isFavorite = response.body().getResult().getIsFavorite();
                 setTitle(details.getName());
                 addRow("Country", details.getCountry());
                 addRow("Latitude",details.getLatitude().toString());
@@ -89,12 +88,10 @@ public class Details extends AppCompatActivity {
 
         //if selected id matches my button's id
         if(id == R.id.favoriteButton){
-            //get favorite status;
-            Drawable star = item.getIcon();
             final Drawable starOn = getDrawable(R.drawable.star_on);
             final Drawable starOff = getDrawable(R.drawable.star_off);
             //compare to see if favorited using the drawables
-            if(star.getConstantState().equals(starOn.getConstantState())){
+            if(isFavorite){
                 mApiService.remSpotFav(token, spotId).enqueue(new Callback<RemoveFavPOST>() {
                     @Override
                     public void onResponse(Call<RemoveFavPOST> call, Response<RemoveFavPOST> response) {

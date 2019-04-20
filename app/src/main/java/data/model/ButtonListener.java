@@ -14,26 +14,28 @@ public class ButtonListener implements View.OnClickListener{
     private APIService mApiService;
     private Drawable starOn;
     private Drawable starOff;
+    private boolean isFavorite;
 
-    public ButtonListener(String token, APIService mApiService, Drawable starOn, Drawable starOff){
+    public ButtonListener(String token, APIService mApiService, Drawable starOn, Drawable starOff, boolean isFavorite){
         this.token = token;
         this.mApiService = mApiService;
         this.starOn = starOn;
         this.starOff = starOff;
+        this.isFavorite = isFavorite;
     }
 
     @Override
     public void onClick(final View v) {
-        //get id of spot and favorite status
-        String spotIdCurrent = v.getTag().toString();
-        Drawable star = v.getBackground();
-        //compare to see if favorited using the drawables
-        if(star.getConstantState().equals(starOn.getConstantState())){
+        //get id of spot
+        final String spotIdCurrent = v.getTag().toString();
+        if(isFavorite){
             mApiService.remSpotFav(token, spotIdCurrent).enqueue(new Callback<RemoveFavPOST>() {
                 @Override
                 public void onResponse(Call<RemoveFavPOST> call, Response<RemoveFavPOST> response) {
                     //backend wil unfavorite by itself, i just set image resource
                     v.setBackground(starOff);
+                    isFavorite = false;
+
                 }
 
                 @Override
@@ -48,6 +50,7 @@ public class ButtonListener implements View.OnClickListener{
                 public void onResponse(Call<AddFavPOST> call, Response<AddFavPOST> response) {
                     //backend will favorite by itself, i just set image resource
                     v.setBackground(starOn);
+                    isFavorite = true;
                 }
 
                 @Override
