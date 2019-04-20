@@ -49,14 +49,13 @@ public class GetAllSpotsCallback implements Callback<GetAllSpotsPOST> {
             String spotName = spotCurrent.getName();
             String spotCountry = spotCurrent.getCountry();
             String spotId = spotCurrent.getId();
-            Boolean isFavorite = spotCurrent.getIsFavorite();
+            boolean isFavorite = spotCurrent.getIsFavorite();
             //add spot information to row
             addSpotText(spotName, textLayout);
             addSpotText(spotCountry, textLayout);
             addFavButton(lp, spotCurrent, buttonLayout);
             row.addView(textLayout);
             row.addView(buttonLayout);
-            row.setTag(spotId);
             row.setOnClickListener(new RowListener(context, token, spotId, isFavorite));
             tableLayout.addView(row);
         }

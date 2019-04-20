@@ -4,8 +4,6 @@ import android.graphics.drawable.Drawable;
 import android.view.View;
 
 
-import data.model.AddFavPOST;
-import data.model.RemoveFavPOST;
 import data.remote.APIService;
 import retrofit2.Call;
 import retrofit2.Callback;
