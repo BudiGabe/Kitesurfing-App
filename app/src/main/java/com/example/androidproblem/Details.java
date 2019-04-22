@@ -92,11 +92,11 @@ public class Details extends AppCompatActivity {
             final Drawable starOff = getDrawable(R.drawable.star_off);
             //compare to see if favorited using the drawables
             if(isFavorite){
+                item.setIcon(starOff);
+                isFavorite = false;
                 mApiService.remSpotFav(token, spotId).enqueue(new Callback<RemoveFavPOST>() {
                     @Override
                     public void onResponse(Call<RemoveFavPOST> call, Response<RemoveFavPOST> response) {
-                        //backend wil unfavorite by itself, i just set image resource
-                        item.setIcon(starOff);
                     }
 
                     @Override
@@ -106,11 +106,11 @@ public class Details extends AppCompatActivity {
                 });
             }
             else{
+                item.setIcon(starOn);
+                isFavorite = true;
                 mApiService.addSpotFav(token, spotId).enqueue(new Callback<AddFavPOST>() {
                     @Override
                     public void onResponse(Call<AddFavPOST> call, Response<AddFavPOST> response) {
-                        //backend will favorite by itself, i just set image resource
-                        item.setIcon(starOn);
                     }
 
                     @Override

@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TableLayout;
 
 import data.model.GetAllSpotsCallback;
+import data.model.Resources;
 import data.model.TokenPost;
 import data.remote.APIService;
 import data.remote.ApiUtils;
@@ -26,10 +27,17 @@ public class MainActivity extends AppCompatActivity {
     String token;
     Drawable starOn;
     Drawable starOff;
+    Resources res;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        res = new Resources("", "");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         setContentView(R.layout.activity_main);
 
         final TableLayout tableLayout = (TableLayout) findViewById(R.id.tableLayout);
@@ -38,13 +46,23 @@ public class MainActivity extends AppCompatActivity {
         starOn = getDrawable(R.drawable.star_on);
         starOff = getDrawable(R.drawable.star_off);
 
+
+
         //get token from backend
         mApiService.getToken(EMAIL_VALID).enqueue(new Callback<TokenPost>() {
             @Override
             public void onResponse(Call<TokenPost> call, Response<TokenPost> response) {
                 token = response.body().getResult().getToken();
-                //get spot list from backend, after getting token
-                mApiService.getAllSpots(token,"","").enqueue(new GetAllSpotsCallback(token, tableLayout, favButton, starOn, starOff, mApiService, getApplicationContext()));
+                if(getIntent().getExtras() == null){
+                    mApiService.getAllSpots(token,"","").enqueue(new GetAllSpotsCallback(token, tableLayout, favButton, starOn, starOff, mApiService, getApplicationContext()));
+                }
+                else{
+                    res = getIntent().getExtras().getParcelable("Resource");
+                    String country = res.getCountry();
+                    float windProb = Float.valueOf(res.getWindProb());
+                    mApiService.getAllSpots(token,country,windProb).enqueue(new GetAllSpotsCallback(token, tableLayout, favButton, starOn, starOff, mApiService, getApplicationContext()));
+                }
+
             }
             @Override
             public void onFailure(Call<TokenPost> call, Throwable t) {
@@ -53,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //createa action bar
+    //create action bar
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -63,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         Intent intent = new Intent(getApplicationContext(), FilterActivity.class);
+        //put res in intent as parcelable
+        intent.putExtra("Resources", res);
         startActivity(intent);
         return super.onOptionsItemSelected(item);
     }

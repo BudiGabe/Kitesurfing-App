@@ -29,13 +29,11 @@ public class ButtonListener implements View.OnClickListener{
         //get id of spot
         final String spotIdCurrent = v.getTag().toString();
         if(isFavorite){
+            v.setBackground(starOff);
+            isFavorite = false;
             mApiService.remSpotFav(token, spotIdCurrent).enqueue(new Callback<RemoveFavPOST>() {
                 @Override
                 public void onResponse(Call<RemoveFavPOST> call, Response<RemoveFavPOST> response) {
-                    //backend wil unfavorite by itself, i just set image resource
-                    v.setBackground(starOff);
-                    isFavorite = false;
-
                 }
 
                 @Override
@@ -45,12 +43,11 @@ public class ButtonListener implements View.OnClickListener{
             });
         }
         else{
+            v.setBackground(starOn);
+            isFavorite = true;
             mApiService.addSpotFav(token, spotIdCurrent).enqueue(new Callback<AddFavPOST>() {
                 @Override
                 public void onResponse(Call<AddFavPOST> call, Response<AddFavPOST> response) {
-                    //backend will favorite by itself, i just set image resource
-                    v.setBackground(starOn);
-                    isFavorite = true;
                 }
 
                 @Override

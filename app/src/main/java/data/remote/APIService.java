@@ -30,6 +30,13 @@ public interface APIService {
                                       @Field("windProbability") String windProbability);
 
     @Headers("Accept:application/json")
+    @POST("/api-spot-get-all")
+    @FormUrlEncoded
+    Call<GetAllSpotsPOST> getAllSpots(@Header("token") String token,
+                                      @Field("country") String country,
+                                      @Field("windProbability") float windProbability);
+
+    @Headers("Accept:application/json")
     @POST("/api-spot-get-details")
     @FormUrlEncoded
     Call<GetSpotDetPOST> getSpotDet(@Header("token") String token,
