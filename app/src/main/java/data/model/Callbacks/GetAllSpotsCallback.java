@@ -1,9 +1,11 @@
 package data.model.Callbacks;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -23,9 +25,10 @@ public class GetAllSpotsCallback implements Callback<GetAllSpotsPOST> {
     private String token;
     private TableLayout tableLayout;
     private ImageButton favButton;
-    private LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT);
+    private LinearLayout.LayoutParams lpText = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+    private RelativeLayout.LayoutParams lpButton = new RelativeLayout.LayoutParams(
+            RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
     private Drawable starOn;
     private Drawable starOff;
     private APIService mApiService;
@@ -52,7 +55,7 @@ public class GetAllSpotsCallback implements Callback<GetAllSpotsPOST> {
             //initialize all needed objects
             TableRow row = new TableRow(context);
             LinearLayout textLayout = new LinearLayout(context);
-            LinearLayout buttonLayout = new LinearLayout(context);
+            RelativeLayout buttonLayout = new RelativeLayout(context);
             textLayout.setOrientation(LinearLayout.VERTICAL);
             //get all needed spot information
             GetAllSpotsResult spotCurrent = spotList.get(i);
@@ -61,13 +64,14 @@ public class GetAllSpotsCallback implements Callback<GetAllSpotsPOST> {
             String spotId = spotCurrent.getId();
             boolean isFavorite = spotCurrent.getIsFavorite();
             //add spot information to row
-            addSpotText(spotName, textLayout);
-            addSpotText(spotCountry, textLayout);
-            addFavButton(lp, isFavorite, spotId, buttonLayout);
+            addSpotText(spotName, textLayout, Typeface.BOLD, 20);
+            addSpotText(spotCountry, textLayout, Typeface.NORMAL, 14);
+            addFavButton(lpButton, isFavorite, spotId, buttonLayout);
             row.addView(textLayout);
             row.addView(buttonLayout);
             row.setOnClickListener(new RowListener(context, token, spotId));
             tableLayout.addView(row);
+
         }
     }
 
@@ -76,17 +80,22 @@ public class GetAllSpotsCallback implements Callback<GetAllSpotsPOST> {
 
     }
 
-    private void addSpotText(String string, LinearLayout textLayout){
+    //method to create TextViews in rows
+    private void addSpotText(String string, LinearLayout textLayout, int style, float size){
         TextView spot = new TextView(context);
         spot.setText(string);
-        spot.setLayoutParams(lp);
+        spot.setTextSize(size);
+        spot.setTypeface(null, style);
+        lpText.setMargins(0,25,0,25);
+        spot.setLayoutParams(lpText);
         textLayout.addView(spot);
     }
-
-    private void addFavButton(LinearLayout.LayoutParams lp, boolean isFavorite, String spotId,
-                              LinearLayout buttonLayout){
+    //method to create ImageButton in rows
+    private void addFavButton(RelativeLayout.LayoutParams lp, boolean isFavorite, String spotId,
+                              RelativeLayout buttonLayout){
         //create every button
         favButton = new ImageButton(context);
+        lp.setMargins(0,25,0,25);
         favButton.setLayoutParams(lp);
         //set tag for easier access to spotId
         favButton.setTag(spotId);

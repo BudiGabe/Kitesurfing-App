@@ -1,5 +1,6 @@
 package com.example.androidproblem;
 
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
 
 import data.model.POSTS.AddFavPOST;
 import data.model.POSTS.GetSpotDetPOST;
@@ -124,9 +126,12 @@ public class Details extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void addSpotText(String string, LinearLayout linearLayout){
+    private void addSpotText(String string, LinearLayout linearLayout, float size, int style){
         TextView textView = new TextView(getApplicationContext());
         textView.setText(string);
+        textView.setTypeface(null, style);
+        textView.setTextSize(size);
+        lp.setMargins(0,25,0,25);
         textView.setLayoutParams(lp);
         linearLayout.addView(textView);
     }
@@ -135,8 +140,8 @@ public class Details extends AppCompatActivity {
         row = new TableRow(getApplicationContext());
         linearLayout = new LinearLayout(getApplicationContext());
         linearLayout.setOrientation(LinearLayout.VERTICAL);
-        addSpotText(title, linearLayout);
-        addSpotText(detail, linearLayout);
+        addSpotText(title, linearLayout, 20, Typeface.BOLD);
+        addSpotText(detail, linearLayout, 15, Typeface.NORMAL);
         row.addView(linearLayout);
         tableLayout.addView(row);
     }
