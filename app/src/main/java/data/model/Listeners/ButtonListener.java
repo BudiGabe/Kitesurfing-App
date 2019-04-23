@@ -1,9 +1,11 @@
-package data.model;
+package data.model.Listeners;
 
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
 
+import data.model.POSTS.AddFavPOST;
+import data.model.POSTS.RemoveFavPOST;
 import data.remote.APIService;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -16,7 +18,8 @@ public class ButtonListener implements View.OnClickListener{
     private Drawable starOff;
     private boolean isFavorite;
 
-    public ButtonListener(String token, APIService mApiService, Drawable starOn, Drawable starOff, boolean isFavorite){
+    public ButtonListener(String token, APIService mApiService, Drawable starOn, Drawable starOff,
+                          boolean isFavorite){
         this.token = token;
         this.mApiService = mApiService;
         this.starOn = starOn;

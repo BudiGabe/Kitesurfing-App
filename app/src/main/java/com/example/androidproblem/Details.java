@@ -10,10 +10,10 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import data.model.AddFavPOST;
-import data.model.GetSpotDetPOST;
-import data.model.GetSpotDetResult;
-import data.model.RemoveFavPOST;
+import data.model.POSTS.AddFavPOST;
+import data.model.POSTS.GetSpotDetPOST;
+import data.model.Results.GetSpotDetResult;
+import data.model.POSTS.RemoveFavPOST;
 import data.remote.APIService;
 import data.remote.ApiUtils;
 import retrofit2.Call;
@@ -45,7 +45,8 @@ public class Details extends AppCompatActivity {
         token = extras.getString("token");
         spotId = extras.getString("spotId");
 
-        lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
 
         mApiService.getSpotDet(token, spotId).enqueue(new Callback<GetSpotDetPOST>() {
             @Override
@@ -93,10 +94,11 @@ public class Details extends AppCompatActivity {
             //compare to see if favorited using the drawables
             if(isFavorite){
                 item.setIcon(starOff);
-                isFavorite = false;
+
                 mApiService.remSpotFav(token, spotId).enqueue(new Callback<RemoveFavPOST>() {
                     @Override
-                    public void onResponse(Call<RemoveFavPOST> call, Response<RemoveFavPOST> response) {
+                    public void onResponse(Call<RemoveFavPOST> call,
+                                           Response<RemoveFavPOST> response) {
                     }
 
                     @Override
@@ -107,7 +109,6 @@ public class Details extends AppCompatActivity {
             }
             else{
                 item.setIcon(starOn);
-                isFavorite = true;
                 mApiService.addSpotFav(token, spotId).enqueue(new Callback<AddFavPOST>() {
                     @Override
                     public void onResponse(Call<AddFavPOST> call, Response<AddFavPOST> response) {

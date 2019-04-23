@@ -1,12 +1,12 @@
 package data.remote;
 
 
-import data.model.AddFavPOST;
-import data.model.GetAllSpotsPOST;
-import data.model.GetSpotCountriesPOST;
-import data.model.GetSpotDetPOST;
-import data.model.RemoveFavPOST;
-import data.model.TokenPost;
+import data.model.POSTS.AddFavPOST;
+import data.model.POSTS.GetAllSpotsPOST;
+import data.model.POSTS.GetSpotCountriesPOST;
+import data.model.POSTS.GetSpotDetPOST;
+import data.model.POSTS.RemoveFavPOST;
+import data.model.POSTS.TokenPost;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;

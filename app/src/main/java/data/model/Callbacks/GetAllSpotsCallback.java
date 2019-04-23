@@ -1,4 +1,4 @@
-package data.model;
+package data.model.Callbacks;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -10,6 +10,10 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import data.model.Listeners.ButtonListener;
+import data.model.Listeners.RowListener;
+import data.model.POSTS.GetAllSpotsPOST;
+import data.model.Results.GetAllSpotsResult;
 import data.remote.APIService;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,13 +23,19 @@ public class GetAllSpotsCallback implements Callback<GetAllSpotsPOST> {
     private String token;
     private TableLayout tableLayout;
     private ImageButton favButton;
-    private LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+    private LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT);
     private Drawable starOn;
     private Drawable starOff;
     private APIService mApiService;
     private Context context;
 
-    public GetAllSpotsCallback(String token, TableLayout tableLayout, ImageButton favButton, Drawable starOn, Drawable starOff, APIService mApiService, Context context){
+    public GetAllSpotsCallback(String token, TableLayout tableLayout, ImageButton favButton,
+                               Drawable starOn,
+                               Drawable starOff,
+                               APIService mApiService,
+                               Context context){
         this.token = token;
         this.tableLayout = tableLayout;
         this.favButton = favButton;
@@ -73,7 +83,8 @@ public class GetAllSpotsCallback implements Callback<GetAllSpotsPOST> {
         textLayout.addView(spot);
     }
 
-    private void addFavButton(LinearLayout.LayoutParams lp, boolean isFavorite, String spotId, LinearLayout buttonLayout){
+    private void addFavButton(LinearLayout.LayoutParams lp, boolean isFavorite, String spotId,
+                              LinearLayout buttonLayout){
         //create every button
         favButton = new ImageButton(context);
         favButton.setLayoutParams(lp);
@@ -86,7 +97,8 @@ public class GetAllSpotsCallback implements Callback<GetAllSpotsPOST> {
         else{
             favButton.setBackground(starOff);
         }
-        favButton.setOnClickListener(new ButtonListener(token,mApiService, starOn, starOff, isFavorite));
+        favButton.setOnClickListener(new ButtonListener(token,mApiService, starOn, starOff,
+                                                        isFavorite));
         buttonLayout.addView(favButton);
     }
 }

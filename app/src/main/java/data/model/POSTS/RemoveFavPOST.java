@@ -1,20 +1,19 @@
-package data.model;
+package data.model.POSTS;
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class GetSpotCountriesPOST {
+public class RemoveFavPOST {
 
     @SerializedName("result")
     @Expose
-    private List<String> result = null;
+    private String result;
 
-    public List<String> getResult() {
+    public String getResult() {
         return result;
     }
 
-    public void setResult(List<String> result) {
+    public void setResult(String result) {
         this.result = result;
     }
 

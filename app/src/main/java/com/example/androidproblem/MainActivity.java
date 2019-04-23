@@ -9,9 +9,9 @@ import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.TableLayout;
 
-import data.model.GetAllSpotsCallback;
+import data.model.Callbacks.GetAllSpotsCallback;
 import data.model.Resources;
-import data.model.TokenPost;
+import data.model.POSTS.TokenPost;
 import data.remote.APIService;
 import data.remote.ApiUtils;
 import retrofit2.Call;
@@ -53,14 +53,29 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<TokenPost> call, Response<TokenPost> response) {
                 token = response.body().getResult().getToken();
+                //get all spots unfiltered if there was no filter added
                 if(getIntent().getExtras() == null){
-                    mApiService.getAllSpots(token,"","").enqueue(new GetAllSpotsCallback(token, tableLayout, favButton, starOn, starOff, mApiService, getApplicationContext()));
+                    mApiService.getAllSpots(token,"","").enqueue(
+                            new GetAllSpotsCallback(token,
+                                                    tableLayout,
+                                                    favButton,
+                                                    starOn,
+                                                    starOff,
+                                                    mApiService,
+                                                    getApplicationContext()));
                 }
                 else{
                     res = getIntent().getExtras().getParcelable("Resource");
                     String country = res.getCountry();
                     float windProb = Float.valueOf(res.getWindProb());
-                    mApiService.getAllSpots(token,country,windProb).enqueue(new GetAllSpotsCallback(token, tableLayout, favButton, starOn, starOff, mApiService, getApplicationContext()));
+                    mApiService.getAllSpots(token,country,windProb).enqueue(
+                            new GetAllSpotsCallback(token,
+                                                    tableLayout,
+                                                    favButton,
+                                                    starOn,
+                                                    starOff,
+                                                    mApiService,
+                                                    getApplicationContext()));
                 }
 
             }
@@ -78,10 +93,11 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    //open new activity on button press
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         Intent intent = new Intent(getApplicationContext(), FilterActivity.class);
-        //put res in intent as parcelable
+        //put res in intent as parcelable to modify in FilterActivity
         intent.putExtra("Resources", res);
         startActivity(intent);
         return super.onOptionsItemSelected(item);

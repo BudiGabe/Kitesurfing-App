@@ -1,8 +1,10 @@
-package data.model;
+package data.model.POSTS;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import data.model.Results.GetAllSpotsResult;
 
 public class GetAllSpotsPOST {
 
