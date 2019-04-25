@@ -1,4 +1,4 @@
-package data.model.POSTS;
+package data.model.posts;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

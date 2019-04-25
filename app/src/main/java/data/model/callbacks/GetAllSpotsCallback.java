@@ -1,4 +1,4 @@
-package data.model.Callbacks;
+package data.model.callbacks;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -12,10 +12,11 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import data.model.Listeners.ButtonListener;
-import data.model.Listeners.RowListener;
-import data.model.POSTS.GetAllSpotsPOST;
-import data.model.Results.GetAllSpotsResult;
+import data.model.Spot;
+import data.model.listeners.ButtonListener;
+import data.model.listeners.RowListener;
+import data.model.posts.GetAllSpotsPOST;
+import data.model.results.GetAllSpotsResult;
 import data.remote.APIService;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -56,20 +57,21 @@ public class GetAllSpotsCallback implements Callback<GetAllSpotsPOST> {
             TableRow row = new TableRow(context);
             LinearLayout textLayout = new LinearLayout(context);
             RelativeLayout buttonLayout = new RelativeLayout(context);
+            Spot spot = new Spot();
             textLayout.setOrientation(LinearLayout.VERTICAL);
             //get all needed spot information
             GetAllSpotsResult spotCurrent = spotList.get(i);
-            String spotName = spotCurrent.getName();
-            String spotCountry = spotCurrent.getCountry();
-            String spotId = spotCurrent.getId();
-            boolean isFavorite = spotCurrent.getIsFavorite();
+            spot.setName(spotCurrent.getName());
+            spot.setCountry(spotCurrent.getCountry());
+            spot.setId(spotCurrent.getId());
+            spot.setIsFavorite(spotCurrent.getIsFavorite());
             //add spot information to row
-            addSpotText(spotName, textLayout, Typeface.BOLD, 20);
-            addSpotText(spotCountry, textLayout, Typeface.NORMAL, 14);
-            addFavButton(lpButton, isFavorite, spotId, buttonLayout);
+            addSpotText(spot.getName(), textLayout, Typeface.BOLD, 20);
+            addSpotText(spot.getCountry(), textLayout, Typeface.NORMAL, 14);
+            addFavButton(lpButton, spot, buttonLayout);
             row.addView(textLayout);
             row.addView(buttonLayout);
-            row.setOnClickListener(new RowListener(context, token, spotId));
+            row.setOnClickListener(new RowListener(context, token, spot));
             tableLayout.addView(row);
 
         }
@@ -91,23 +93,23 @@ public class GetAllSpotsCallback implements Callback<GetAllSpotsPOST> {
         textLayout.addView(spot);
     }
     //method to create ImageButton in rows
-    private void addFavButton(RelativeLayout.LayoutParams lp, boolean isFavorite, String spotId,
+    private void addFavButton(RelativeLayout.LayoutParams lp, Spot spot,
                               RelativeLayout buttonLayout){
         //create every button
         favButton = new ImageButton(context);
         lp.setMargins(0,25,0,25);
         favButton.setLayoutParams(lp);
         //set tag for easier access to spotId
-        favButton.setTag(spotId);
+        favButton.setTag(spot.getId());
         //set button image
-        if(isFavorite){
+        if(spot.getIsFavorite()){
             favButton.setBackground(starOn);
         }
         else{
             favButton.setBackground(starOff);
         }
         favButton.setOnClickListener(new ButtonListener(token,mApiService, starOn, starOff,
-                                                        isFavorite));
+                                                        spot));
         buttonLayout.addView(favButton);
     }
 }

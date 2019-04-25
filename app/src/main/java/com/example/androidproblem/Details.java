@@ -12,10 +12,10 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 
-import data.model.POSTS.AddFavPOST;
-import data.model.POSTS.GetSpotDetPOST;
-import data.model.Results.GetSpotDetResult;
-import data.model.POSTS.RemoveFavPOST;
+import data.model.posts.AddFavPOST;
+import data.model.posts.GetSpotDetPOST;
+import data.model.results.GetSpotDetResult;
+import data.model.posts.RemoveFavPOST;
 import data.remote.APIService;
 import data.remote.ApiUtils;
 import retrofit2.Call;
@@ -46,6 +46,7 @@ public class Details extends AppCompatActivity {
         extras = getIntent().getExtras();
         token = extras.getString("token");
         spotId = extras.getString("spotId");
+        isFavorite = extras.getBoolean("isFavorite");
 
         lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -54,7 +55,6 @@ public class Details extends AppCompatActivity {
             @Override
             public void onResponse(Call<GetSpotDetPOST> call, Response<GetSpotDetPOST> response) {
                 GetSpotDetResult details = response.body().getResult();
-                isFavorite = response.body().getResult().getIsFavorite();
                 setTitle(details.getName());
                 addRow("Country", details.getCountry());
                 addRow("Latitude",details.getLatitude().toString());
@@ -96,7 +96,7 @@ public class Details extends AppCompatActivity {
             //compare to see if favorited using the drawables
             if(isFavorite){
                 item.setIcon(starOff);
-
+                isFavorite = false;
                 mApiService.remSpotFav(token, spotId).enqueue(new Callback<RemoveFavPOST>() {
                     @Override
                     public void onResponse(Call<RemoveFavPOST> call,
@@ -111,6 +111,7 @@ public class Details extends AppCompatActivity {
             }
             else{
                 item.setIcon(starOn);
+                isFavorite = true;
                 mApiService.addSpotFav(token, spotId).enqueue(new Callback<AddFavPOST>() {
                     @Override
                     public void onResponse(Call<AddFavPOST> call, Response<AddFavPOST> response) {

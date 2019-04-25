@@ -1,4 +1,4 @@
-package data.model.POSTS;
+package data.model.posts;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;

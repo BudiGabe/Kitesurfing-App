@@ -1,4 +1,4 @@
-package data.model.Results;
+package data.model.results;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

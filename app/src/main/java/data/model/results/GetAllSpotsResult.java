@@ -1,9 +1,9 @@
-package data.model.Results;
+package data.model.results;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class GetSpotDetResult {
+public class GetAllSpotsResult {
 
     @SerializedName("id")
     @Expose
@@ -11,15 +11,6 @@ public class GetSpotDetResult {
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("longitude")
-    @Expose
-    private Double longitude;
-    @SerializedName("latitude")
-    @Expose
-    private Double latitude;
-    @SerializedName("windProbability")
-    @Expose
-    private Integer windProbability;
     @SerializedName("country")
     @Expose
     private String country;
@@ -44,30 +35,6 @@ public class GetSpotDetResult {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public Integer getWindProbability() {
-        return windProbability;
-    }
-
-    public void setWindProbability(Integer windProbability) {
-        this.windProbability = windProbability;
     }
 
     public String getCountry() {

@@ -1,9 +1,9 @@
-package data.model.POSTS;
+package data.model.posts;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import data.model.Results.GetSpotDetResult;
+import data.model.results.GetSpotDetResult;
 
 public class GetSpotDetPOST {
 

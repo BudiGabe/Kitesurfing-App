@@ -9,9 +9,9 @@ import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.TableLayout;
 
-import data.model.Callbacks.GetAllSpotsCallback;
+import data.model.callbacks.GetAllSpotsCallback;
 import data.model.Resources;
-import data.model.POSTS.TokenPost;
+import data.model.posts.TokenPost;
 import data.remote.APIService;
 import data.remote.ApiUtils;
 import retrofit2.Call;
