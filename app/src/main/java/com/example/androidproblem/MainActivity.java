@@ -9,6 +9,10 @@ import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.TableLayout;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import data.model.Params;
 import data.model.callbacks.GetAllSpotsCallback;
 import data.model.Resources;
 import data.model.posts.TokenPost;
@@ -24,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
     ImageButton favButton;
     private APIService mApiService;
     static String EMAIL_VALID = "t1@gmail.com";
+    Map<String, String> tokenParam = new HashMap<>();
+    Map<String,String> getAllParam = new HashMap<>();
+    Params params = new Params();
     String token;
     Drawable starOn;
     Drawable starOff;
@@ -45,17 +52,19 @@ public class MainActivity extends AppCompatActivity {
         mApiService = ApiUtils.getAPIService();
         starOn = getDrawable(R.drawable.star_on);
         starOff = getDrawable(R.drawable.star_off);
-
+        tokenParam.put("email", EMAIL_VALID);
 
 
         //get token from backend
-        mApiService.getToken(EMAIL_VALID).enqueue(new Callback<TokenPost>() {
+        mApiService.getToken(tokenParam).enqueue(new Callback<TokenPost>() {
             @Override
             public void onResponse(Call<TokenPost> call, Response<TokenPost> response) {
                 token = response.body().getResult().getToken();
                 //get all spots unfiltered if there was no filter added
                 if(getIntent().getExtras() == null){
-                    mApiService.getAllSpots(token,"","").enqueue(
+                    getAllParam.put("country", "");
+                    getAllParam.put("windProbability", "");
+                    mApiService.getAllSpots(token,getAllParam).enqueue(
                             new GetAllSpotsCallback(token,
                                                     tableLayout,
                                                     favButton,
@@ -68,7 +77,9 @@ public class MainActivity extends AppCompatActivity {
                     res = getIntent().getExtras().getParcelable("Resource");
                     String country = res.getCountry();
                     float windProb = Float.valueOf(res.getWindProb());
-                    mApiService.getAllSpots(token,country,windProb).enqueue(
+                    params.setCountry(country);
+                    params.setWindProb(windProb);
+                    mApiService.getAllSpotsFiltered(token,params).enqueue(
                             new GetAllSpotsCallback(token,
                                                     tableLayout,
                                                     favButton,

@@ -1,6 +1,9 @@
 package data.remote;
 
 
+import java.util.Map;
+
+import data.model.Params;
 import data.model.posts.AddFavPOST;
 import data.model.posts.GetAllSpotsPOST;
 import data.model.posts.GetSpotCountriesPOST;
@@ -8,6 +11,7 @@ import data.model.posts.GetSpotDetPOST;
 import data.model.posts.RemoveFavPOST;
 import data.model.posts.TokenPost;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Header;
@@ -17,24 +21,25 @@ import retrofit2.http.POST;
 //used to execute HTTP requests
 
 public interface APIService {
-    @Headers("Accept:application/json")
+    @Headers({
+            "Content-Type:application/json"
+    })
     @POST("/api-user-get")
-    @FormUrlEncoded
-    Call<TokenPost> getToken(@Field("email") String email);
+    Call<TokenPost> getToken(@Body Map<String, String> email);
 
-    @Headers("Accept:application/json")
+    @Headers({
+            "Content-Type:application/json"
+    })
     @POST("/api-spot-get-all")
-    @FormUrlEncoded
     Call<GetAllSpotsPOST> getAllSpots(@Header("token") String token,
-                                      @Field("country") String country,
-                                      @Field("windProbability") String windProbability);
+                                      @Body Map<String,String> data);
 
-    @Headers("Accept:application/json")
+    @Headers({
+            "Content-Type:application/json"
+    })
     @POST("/api-spot-get-all")
-    @FormUrlEncoded
-    Call<GetAllSpotsPOST> getAllSpots(@Header("token") String token,
-                                      @Field("country") String country,
-                                      @Field("windProbability") float windProbability);
+    Call<GetAllSpotsPOST> getAllSpotsFiltered(@Header("token") String token,
+                                              @Body Params params);
 
     @Headers("Accept:application/json")
     @POST("/api-spot-get-details")
