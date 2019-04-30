@@ -7,6 +7,14 @@ public class Spot {
     private boolean isFavorite;
 
 
+    public Spot(String name, String country, String id, boolean isFavorite) {
+        this.name = name;
+        this.country = country;
+        this.id = id;
+        this.isFavorite = isFavorite;
+    }
+
+
     public String getName() {
         return name;
     }

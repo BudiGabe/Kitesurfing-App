@@ -1,7 +1,9 @@
 package com.example.androidproblem;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,6 +13,9 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+
+import java.util.HashMap;
+import java.util.Map;
 
 import data.model.posts.AddFavPOST;
 import data.model.posts.GetSpotDetPOST;
@@ -32,7 +37,13 @@ public class Details extends AppCompatActivity {
     LinearLayout.LayoutParams lp;
     TableRow row;
     TableLayout tableLayout;
+    TableLayout.LayoutParams lpRow;
     boolean isFavorite;
+    Map<String,String> data = new HashMap<>();
+    Drawable starOn;
+    Drawable starOff;
+    int titleColor;
+    int subtitleColor;
 
 
     @Override
@@ -41,17 +52,30 @@ public class Details extends AppCompatActivity {
         setContentView(R.layout.activity_details);
 
         tableLayout = (TableLayout) findViewById(R.id.tableLayout);
+        starOn = getDrawable(R.drawable.star_on_action);
+        starOff = getDrawable(R.drawable.star_off_action);
+        titleColor = ContextCompat.getColor(getApplicationContext(), R.color.colorTitle);
+        subtitleColor = ContextCompat.getColor(getApplicationContext(), R.color.colorSubtitle);
 
+        //initialize the API
         mApiService = ApiUtils.getAPIService();
+
+        //get data from intent
         extras = getIntent().getExtras();
         token = extras.getString("token");
         spotId = extras.getString("spotId");
         isFavorite = extras.getBoolean("isFavorite");
+        data.put("spotId", spotId);
 
+
+        //create new layout params for TextViews
         lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
+        lpRow = new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,
+                TableLayout.LayoutParams.WRAP_CONTENT);
 
-        mApiService.getSpotDet(token, spotId).enqueue(new Callback<GetSpotDetPOST>() {
+        //make the call
+        mApiService.getSpotDet(token, data).enqueue(new Callback<GetSpotDetPOST>() {
             @Override
             public void onResponse(Call<GetSpotDetPOST> call, Response<GetSpotDetPOST> response) {
                 GetSpotDetResult details = response.body().getResult();
@@ -75,10 +99,10 @@ public class Details extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.dmenu, menu);
         if(isFavorite){
-            menu.getItem(0).setIcon(R.drawable.star_on);
+            menu.getItem(0).setIcon(starOn);
         }
         else{
-            menu.getItem(0).setIcon(R.drawable.star_off);
+            menu.getItem(0).setIcon(starOff);
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -91,13 +115,11 @@ public class Details extends AppCompatActivity {
 
         //if selected id matches my button's id
         if(id == R.id.favoriteButton){
-            final Drawable starOn = getDrawable(R.drawable.star_on);
-            final Drawable starOff = getDrawable(R.drawable.star_off);
             //compare to see if favorited using the drawables
             if(isFavorite){
                 item.setIcon(starOff);
                 isFavorite = false;
-                mApiService.remSpotFav(token, spotId).enqueue(new Callback<RemoveFavPOST>() {
+                mApiService.remSpotFav(token, data).enqueue(new Callback<RemoveFavPOST>() {
                     @Override
                     public void onResponse(Call<RemoveFavPOST> call,
                                            Response<RemoveFavPOST> response) {
@@ -112,7 +134,7 @@ public class Details extends AppCompatActivity {
             else{
                 item.setIcon(starOn);
                 isFavorite = true;
-                mApiService.addSpotFav(token, spotId).enqueue(new Callback<AddFavPOST>() {
+                mApiService.addSpotFav(token, data).enqueue(new Callback<AddFavPOST>() {
                     @Override
                     public void onResponse(Call<AddFavPOST> call, Response<AddFavPOST> response) {
                     }
@@ -127,12 +149,12 @@ public class Details extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void addSpotText(String string, LinearLayout linearLayout, float size, int style){
+    private void addSpotText(String string, LinearLayout linearLayout, float size, int color){
         TextView textView = new TextView(getApplicationContext());
         textView.setText(string);
-        textView.setTypeface(null, style);
+        textView.setTextColor(color);
         textView.setTextSize(size);
-        lp.setMargins(0,25,0,25);
+        lp.setMargins(0,15,0,15);
         textView.setLayoutParams(lp);
         linearLayout.addView(textView);
     }
@@ -141,9 +163,11 @@ public class Details extends AppCompatActivity {
         row = new TableRow(getApplicationContext());
         linearLayout = new LinearLayout(getApplicationContext());
         linearLayout.setOrientation(LinearLayout.VERTICAL);
-        addSpotText(title, linearLayout, 20, Typeface.BOLD);
-        addSpotText(detail, linearLayout, 15, Typeface.NORMAL);
+        addSpotText(title, linearLayout, 18, titleColor);
+        addSpotText(detail, linearLayout, 14, subtitleColor);
         row.addView(linearLayout);
+        lpRow.setMargins(0,15,0,15);
+        row.setLayoutParams(lpRow);
         tableLayout.addView(row);
     }
 }

@@ -41,26 +41,30 @@ public interface APIService {
     Call<GetAllSpotsPOST> getAllSpotsFiltered(@Header("token") String token,
                                               @Body Params params);
 
-    @Headers("Accept:application/json")
+    @Headers({
+            "Content-Type:application/json"
+    })
     @POST("/api-spot-get-details")
-    @FormUrlEncoded
     Call<GetSpotDetPOST> getSpotDet(@Header("token") String token,
-                                    @Field("spotId") String spotId);
+                                    @Body Map<String,String> data);
 
-    @Headers("Accept:application/json")
+    @Headers({
+            "Content-Type:application/json"
+    })
     @POST("/api-spot-get-countries")
-    @FormUrlEncoded
     Call<GetSpotCountriesPOST> getSpotCountries(@Header("token") String token);
 
-    @Headers("Accept:application/json")
+    @Headers({
+            "Content-Type:application/json"
+    })
     @POST("/api-spot-favorites-add")
-    @FormUrlEncoded
     Call<AddFavPOST> addSpotFav (@Header("token") String token,
-                                   @Field("spotId") String spotId);
+                                 @Body Map<String,String> data);
 
-    @Headers("Accept:application/json")
+    @Headers({
+            "Content-Type:application/json"
+    })
     @POST("/api-spot-favorites-remove")
-    @FormUrlEncoded
     Call<RemoveFavPOST>remSpotFav (@Header("token") String token,
-                                   @Field("spotId") String spotId);
+                                   @Body Map<String,String> data);
 }
