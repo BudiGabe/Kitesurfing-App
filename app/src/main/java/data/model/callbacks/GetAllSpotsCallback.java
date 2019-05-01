@@ -31,7 +31,7 @@ public class GetAllSpotsCallback implements Callback<GetAllSpotsPOST> {
     private ImageButton favButton;
     private LinearLayout.LayoutParams lpText;
     private RelativeLayout.LayoutParams lpButton;
-    private TableLayout.LayoutParams lpRow;
+    private TableLayout.LayoutParams lpTable;
     private Drawable starOn;
     private Drawable starOff;
     private APIService mApiService;
@@ -47,17 +47,12 @@ public class GetAllSpotsCallback implements Callback<GetAllSpotsPOST> {
                                Context context){
         this.token = token;
         this.tableLayout = tableLayout;
+        tableLayout.setStretchAllColumns(true);
         this.favButton = favButton;
         this.starOn = starOn;
         this.starOff = starOff;
         this.mApiService = mApiService;
         this.context = context;
-        this.lpText = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        this.lpButton = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
-                RelativeLayout.LayoutParams.MATCH_PARENT);
-        this.lpRow = new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,
-                TableLayout.LayoutParams.WRAP_CONTENT);
         this.titleColor = ContextCompat.getColor(context, R.color.colorTitle);
         this.subtitleColor = ContextCompat.getColor(context, R.color.colorSubtitle);
     }
@@ -70,10 +65,12 @@ public class GetAllSpotsCallback implements Callback<GetAllSpotsPOST> {
             TableRow row = new TableRow(context);
             LinearLayout textLayout = new LinearLayout(context);
             RelativeLayout buttonLayout = new RelativeLayout(context);
+            lpTable = new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,
+                    TableLayout.LayoutParams.MATCH_PARENT);
             textLayout.setOrientation(LinearLayout.VERTICAL);
             // Get all needed spot information
             GetAllSpotsResult spotCurrent = spotList.get(i);
-            //create new spot with information
+            // Create new spot with information
             Spot spot = new Spot(spotCurrent.getName(),
                     spotCurrent.getCountry(),
                     spotCurrent.getId(),
@@ -85,8 +82,8 @@ public class GetAllSpotsCallback implements Callback<GetAllSpotsPOST> {
             row.addView(textLayout);
             row.addView(buttonLayout);
             // Set up the row
-            lpRow.setMargins(0,15,0,15);
-            row.setLayoutParams(lpRow);
+            lpTable.setMargins(0,15,0,15);
+            row.setLayoutParams(lpTable);
             row.setOnClickListener(new RowListener(context, token, spot));
             // Add row to table
             tableLayout.addView(row);
@@ -105,6 +102,8 @@ public class GetAllSpotsCallback implements Callback<GetAllSpotsPOST> {
         spot.setText(string);
         spot.setTextSize(size);
         spot.setTextColor(color);
+        lpText = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
         lpText.setMargins(0,15,0,15);
         spot.setLayoutParams(lpText);
         textLayout.addView(spot);
@@ -113,6 +112,8 @@ public class GetAllSpotsCallback implements Callback<GetAllSpotsPOST> {
     // Method to create ImageButton in rows
     private void addFavButton(Spot spot, RelativeLayout buttonLayout){
         favButton = new ImageButton(context);
+        lpButton = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
         lpButton.setMargins(0,50,0,50);
         lpButton.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         favButton.setLayoutParams(lpButton);
