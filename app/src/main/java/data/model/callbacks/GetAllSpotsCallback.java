@@ -53,9 +53,9 @@ public class GetAllSpotsCallback implements Callback<GetAllSpotsPOST> {
         this.mApiService = mApiService;
         this.context = context;
         this.lpText = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        this.lpButton = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        this.lpButton = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.MATCH_PARENT);
         this.lpRow = new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,
                 TableLayout.LayoutParams.WRAP_CONTENT);
         this.titleColor = ContextCompat.getColor(context, R.color.colorTitle);

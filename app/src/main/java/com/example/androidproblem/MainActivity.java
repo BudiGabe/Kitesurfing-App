@@ -49,8 +49,6 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
         token = prefs.getString("token", null);
         editor = prefs.edit();
-        tokenParam.put("email", EMAIL_VALID);
-        getToken();
     }
 
     @Override
@@ -62,7 +60,49 @@ public class MainActivity extends AppCompatActivity {
 
         starOn = getDrawable(R.drawable.star_on);
         starOff = getDrawable(R.drawable.star_off);
+        tokenParam.put("email", EMAIL_VALID);
 
+        if(token == null){
+            // Get token from backend
+            mApiService.getToken(tokenParam).enqueue(new Callback<TokenPost>() {
+                @Override
+                public void onResponse(Call<TokenPost> call, Response<TokenPost> response){
+                    token = response.body().getResult().getToken();
+                    editor.putString("token", token);
+                    editor.apply();
+                    getAllSpots(tableLayout);
+                }
+
+                @Override
+                public void onFailure(Call<TokenPost> call, Throwable t) {
+                    Log.e(LOG_TAG, "Failed to get token");
+                }
+            });
+        } else{
+          getAllSpots(tableLayout);
+        }
+
+    }
+
+    // Create action bar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    // Open new activity on button press
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        Intent intent = new Intent(getApplicationContext(), FilterActivity.class);
+        // Put res in intent as parcelable to modify in FilterActivity
+        intent.putExtra("Resources", res);
+        startActivity(intent);
+        return super.onOptionsItemSelected(item);
+    }
+    
+
+    private void getAllSpots(TableLayout tableLayout){
         if(getIntent().getExtras() == null){
             getAllParam.put("country", "");
             getAllParam.put("windProbability", "");
@@ -89,42 +129,6 @@ public class MainActivity extends AppCompatActivity {
                             starOff,
                             mApiService,
                             getApplicationContext()));
-        }
-    }
-
-    // Create action bar
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    // Open new activity on button press
-    @Override
-    public boolean onOptionsItemSelected(final MenuItem item) {
-        Intent intent = new Intent(getApplicationContext(), FilterActivity.class);
-        // Put res in intent as parcelable to modify in FilterActivity
-        intent.putExtra("Resources", res);
-        startActivity(intent);
-        return super.onOptionsItemSelected(item);
-    }
-
-    private synchronized void getToken(){
-        if(token == null){
-            // Get token from backend
-            mApiService.getToken(tokenParam).enqueue(new Callback<TokenPost>() {
-                @Override
-                public void onResponse(Call<TokenPost> call, Response<TokenPost> response){
-                    token = response.body().getResult().getToken();
-                    editor.putString("token", token);
-                    editor.apply();
-                }
-
-                @Override
-                public void onFailure(Call<TokenPost> call, Throwable t) {
-                    Log.e(LOG_TAG, "Failed to get token");
-                }
-            });
         }
     }
 }

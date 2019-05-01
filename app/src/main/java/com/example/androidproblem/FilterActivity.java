@@ -33,7 +33,9 @@ public class FilterActivity extends AppCompatActivity {
         apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String countryString = country.getText().toString();
+                // Trim the string because the added space from autocomplete
+                // confuses the server
+                String countryString = country.getText().toString().trim();
                 String windProbString = windProb.getText().toString();
                 res.setCountry(countryString);
                 res.setWindProb(windProbString);
