@@ -21,9 +21,9 @@ public class RowListener implements View.OnClickListener {
     }
     @Override
     public void onClick(View v) {
-        //create a new intent to start Details activity
+        // Create a new intent to start Details activity
         Intent intent = new Intent(context, Details.class);
-        //will need token and spotId for next POST Request
+        // Will need token and spotId for next POST Request
         intent.putExtra("token", token);
         intent.putExtra("spotId", spot.getId());
         intent.putExtra("isFavorite", spot.getIsFavorite());

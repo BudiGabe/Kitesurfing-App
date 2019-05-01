@@ -25,16 +25,16 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    ImageButton favButton;
+    private ImageButton favButton;
     private APIService mApiService;
-    static String EMAIL_VALID = "t1@gmail.com";
-    Map<String, String> tokenParam = new HashMap<>();
-    Map<String,String> getAllParam = new HashMap<>();
-    Params params = new Params();
-    String token;
-    Drawable starOn;
-    Drawable starOff;
-    Resources res;
+    private static String EMAIL_VALID = "t1@gmail.com";
+    private Map<String, String> tokenParam = new HashMap<>();
+    private Map<String,String> getAllParam = new HashMap<>();
+    private Params params = new Params();
+    private String token;
+    private Drawable starOn;
+    private Drawable starOff;
+    private Resources res;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){

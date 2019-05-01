@@ -12,11 +12,9 @@ import data.model.Resources;
 
 public class FilterActivity extends AppCompatActivity {
 
-    EditText country;
-    EditText windProb;
-    Button apply;
-    Resources res;
-    Bundle data;
+    private EditText country;
+    private EditText windProb;
+    private Resources res;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +23,11 @@ public class FilterActivity extends AppCompatActivity {
 
         country = (EditText) findViewById(R.id.country);
         windProb = (EditText) findViewById(R.id.windProb);
-        apply = (Button) findViewById(R.id.apply);
+        Button apply = (Button) findViewById(R.id.apply);
 
-        //get bundle from intent
-        data = getIntent().getExtras();
-        //get res object from parcelable
+        // Get bundle from intent
+        Bundle data = getIntent().getExtras();
+        // Get res object from parcelable
         res = data.getParcelable("Resources");
 
         apply.setOnClickListener(new View.OnClickListener() {

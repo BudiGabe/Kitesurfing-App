@@ -1,6 +1,7 @@
 package data.model.listeners;
 
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 
 
@@ -21,7 +22,8 @@ public class ButtonListener implements View.OnClickListener{
     private Drawable starOn;
     private Drawable starOff;
     private Spot spot;
-    private Map<String,String> data = new HashMap<>();
+    private Map<String,String> data;
+    private static final String LOG_TAG = "ButtonListener";
 
     public ButtonListener(String token, APIService mApiService, Drawable starOn, Drawable starOff,
                           Spot spot){
@@ -30,13 +32,14 @@ public class ButtonListener implements View.OnClickListener{
         this.starOn = starOn;
         this.starOff = starOff;
         this.spot = spot;
+        this.data = new HashMap<>();
     }
 
     @Override
     public void onClick(final View v) {
-        //get id of spot
+        // Get id of spot
         final String spotIdCurrent = v.getTag().toString();
-        //add spotId to map, then set it as parameter for the POST Request
+        // Add spotId to map, then set it as parameter for the POST Request
         data.put("spotId", spotIdCurrent);
         if(spot.getIsFavorite()){
             v.setBackground(starOff);
@@ -44,11 +47,12 @@ public class ButtonListener implements View.OnClickListener{
             mApiService.remSpotFav(token, data).enqueue(new Callback<RemoveFavPOST>() {
                 @Override
                 public void onResponse(Call<RemoveFavPOST> call, Response<RemoveFavPOST> response) {
+                    Log.d(LOG_TAG, "Remove favorite successful");
                 }
 
                 @Override
                 public void onFailure(Call<RemoveFavPOST> call, Throwable t) {
-
+                    Log.e(LOG_TAG, "Remove favorite failed");
                 }
             });
         }
@@ -58,11 +62,12 @@ public class ButtonListener implements View.OnClickListener{
             mApiService.addSpotFav(token, data).enqueue(new Callback<AddFavPOST>() {
                 @Override
                 public void onResponse(Call<AddFavPOST> call, Response<AddFavPOST> response) {
+                    Log.d(LOG_TAG, "Add favorite successful");
                 }
 
                 @Override
                 public void onFailure(Call<AddFavPOST> call, Throwable t) {
-
+                    Log.e(LOG_TAG, "Add favorite failed");
                 }
             });
         }

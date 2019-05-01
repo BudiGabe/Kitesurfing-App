@@ -1,9 +1,9 @@
 package data.model.callbacks;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -36,8 +36,9 @@ public class GetAllSpotsCallback implements Callback<GetAllSpotsPOST> {
     private Drawable starOff;
     private APIService mApiService;
     private Context context;
-    int titleColor;
-    int subtitleColor;
+    private int titleColor;
+    private int subtitleColor;
+    private static final String LOG_TAG = "getAllSpotsCallBack";
 
     public GetAllSpotsCallback(String token, TableLayout tableLayout, ImageButton favButton,
                                Drawable starOn,
@@ -65,29 +66,29 @@ public class GetAllSpotsCallback implements Callback<GetAllSpotsPOST> {
     public void onResponse(Call<GetAllSpotsPOST> call, Response<GetAllSpotsPOST> response) {
         List<GetAllSpotsResult> spotList = response.body().getResult();
         for(int i = 0; i < spotList.size(); i++){
-            //initialize all needed objects
+            // Initialize all needed objects
             TableRow row = new TableRow(context);
             LinearLayout textLayout = new LinearLayout(context);
             RelativeLayout buttonLayout = new RelativeLayout(context);
             textLayout.setOrientation(LinearLayout.VERTICAL);
-            //get all needed spot information
+            // Get all needed spot information
             GetAllSpotsResult spotCurrent = spotList.get(i);
             //create new spot with information
             Spot spot = new Spot(spotCurrent.getName(),
                     spotCurrent.getCountry(),
                     spotCurrent.getId(),
                     spotCurrent.getIsFavorite());
-            //add spot information to row
+            // Add spot information to row
             addSpotText(spot.getName(), textLayout, 18, titleColor);
             addSpotText(spot.getCountry(), textLayout, 14, subtitleColor);
             addFavButton(spot, buttonLayout);
             row.addView(textLayout);
             row.addView(buttonLayout);
-            //set up the row
+            // Set up the row
             lpRow.setMargins(0,15,0,15);
             row.setLayoutParams(lpRow);
             row.setOnClickListener(new RowListener(context, token, spot));
-            //add row to table
+            // Add row to table
             tableLayout.addView(row);
 
         }
@@ -95,10 +96,10 @@ public class GetAllSpotsCallback implements Callback<GetAllSpotsPOST> {
 
     @Override
     public void onFailure(Call<GetAllSpotsPOST> call, Throwable t) {
-
+        Log.e(LOG_TAG, "Getting spots failed");
     }
 
-    //method to create TextViews in rows
+    // Method to create TextViews in rows
     private void addSpotText(String string, LinearLayout textLayout, float size, int color){
         TextView spot = new TextView(context);
         spot.setText(string);
@@ -108,23 +109,23 @@ public class GetAllSpotsCallback implements Callback<GetAllSpotsPOST> {
         spot.setLayoutParams(lpText);
         textLayout.addView(spot);
     }
-    //method to create ImageButton in rows
+
+    // Method to create ImageButton in rows
     private void addFavButton(Spot spot, RelativeLayout buttonLayout){
-        //create every button
         favButton = new ImageButton(context);
-        lpButton.setMargins(10,30,10,30);
+        lpButton.setMargins(0,50,0,50);
+        lpButton.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         favButton.setLayoutParams(lpButton);
-        //set tag for easier access to spotId
+        // Set tag for easier access to spotId
         favButton.setTag(spot.getId());
-        //set button image
+        // Set button image
         if(spot.getIsFavorite()){
             favButton.setBackground(starOn);
         }
         else{
             favButton.setBackground(starOff);
         }
-        favButton.setOnClickListener(new ButtonListener(token,mApiService, starOn, starOff,
-                                                        spot));
+        favButton.setOnClickListener(new ButtonListener(token,mApiService, starOn, starOff, spot));
         buttonLayout.addView(favButton);
     }
 }
